@@ -31,23 +31,23 @@ float** clean_delete(float** data, int rows, int cols, int* new_rows) {
     return realloc(cleaned_data, (*new_rows) * sizeof(float*)); //reallocats memory to match the new rows and returns the new cleaned_data pointer 2D array.
 }
 
-void clean_impute(float** data, int rows, int cols) {
-    for (int j = 0; j < cols; j++) {
-        float sum = 0;
-        int count = 0;
+void clean_impute(float** data, int rows, int cols) { //has no return type since the data array is being changed directly using pointers
+    for (int j = 0; j < cols; j++) { //loop though each coloumn
+        float sum = 0; //innitialize sum and count
+        int count = 0; //counts the number of non NaN values in the coloumn
 
-        for (int i = 0; i < rows; i++) {
-            if (!isnan(data[i][j])) {
-                sum += data[i][j];
-                count++;
+        for (int i = 0; i < rows; i++) { //loops through contents of each coloumn (goes down the coloumn)
+            if (!isnan(data[i][j])) { //checks if any value in a coloumn is NaN
+                sum += data[i][j]; //then increments sum by the number in data
+                count++; //also increases count by 1
             }
         }
 
-        float replacement = (count > 0) ? (sum / count) : 0;
+        float replacement = (count > 0) ? (sum / count) : 0; //if count is > 0 then set replacement = sum/count, else set replacement to 0
 
-        for (int i = 0; i < rows; i++) {
-            if (isnan(data[i][j])) {
-                data[i][j] = replacement;
+        for (int i = 0; i < rows; i++) { //loops through each coloumn by going down.
+            if (isnan(data[i][j])) { //if there exists a NaN value then...
+                data[i][j] = replacement; //replace it with the replacement number. (since data is a pointer, it replaces it directly in main)
             }
         }
     }

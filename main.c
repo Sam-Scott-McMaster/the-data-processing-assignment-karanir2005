@@ -13,21 +13,22 @@ int main(int argc, char* argv[]) {
     if (argc > 1 && strcmp(argv[1], "-d") == 0) { //if there exists an arg and the first arg is -d then...
         int new_rows; //var to store new rows
         float** cleaned_data = clean_delete(data, rows, cols, &new_rows); //passes new rows as pointer since its being updated (also stores cleaned array in 2D array called cleaned_data)
-        output_data(cleaned_data, new_rows, cols);
+        output_data(cleaned_data, new_rows, cols); //outputs data to stdout
 
-        for (int i = 0; i < new_rows; i++) {
-            free(cleaned_data[i]);
+        for (int i = 0; i < new_rows; i++) { //loops through all rows of cleaned data
+            free(cleaned_data[i]); //frees memory for each row
         }
-        free(cleaned_data);
-    } else {
-        clean_impute(data, rows, cols);
-        output_data(data, rows, cols);
+        free(cleaned_data); //frees memory for the whole 2D array
+    } 
+    else { //when there is no argument followed by ./clean then...
+        clean_impute(data, rows, cols); //clean by impute (passes the data array along with rows and cols.)
+        output_data(data, rows, cols); //outputs the updated data to stdout
     }
 
-    for (int i = 0; i < rows; i++) {
+    for (int i = 0; i < rows; i++) { //loops through all rows of data and frees memory
         free(data[i]);
     }
-    free(data);
+    free(data); //frees the memory occupied by data.
 
-    return 0;
+    return 0; //exit success.
 }
