@@ -1,0 +1,34 @@
+name: Data Processing - CI Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3 #get code from github repo
+
+      - name: Set up GCC
+        run: sudo apt-get install -y gcc #install gcc
+
+      - name: Build the clean executable ##verify the executable is built.
+        run: |
+          make
+          ls -l clean
+          echo "Build successful!"
+
+      - name: Run clean on wbcd.txt
+        run: |
+          echo "Running clean on wbcd.txt"
+          ./clean <wbcd.txt >cleaned_wbcd.txt
+
+      - name: Upload the cleaned file
+        uses: actions/upload-artifact@v3
+        with:
+          name: cleaned_wbcd.txt
+          path: cleaned_wbcd.txt # upload clean_wbcd.txt as an artifact to the github-->actions-->artifact
